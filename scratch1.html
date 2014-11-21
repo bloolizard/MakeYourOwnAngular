@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        //exercise in templating
+        function controller1() {
+            var controller1 = {};
+            controller1.scope = {};
+            controller1.scope.message = 'Hello World!';
+            controller1.scope.data = 22;
+            console.log(controller1.scope['message']);
+
+            var keys = Object.keys(controller1.scope);
+            var reExps = keys.map(function(elem){
+                return new RegExp("{{"+elem+"}}");
+            });
+            console.log(reExps);
+
+            var ctrl1 = document.querySelectorAll("[view=controller1]")[0];
+            for (i in ctrl1.children){
+                var elemContent = ctrl1.children[i].textContent;
+                for (i in reExps){
+                    if (reExps[i].test(elemContent) == true){
+                        ctrl1.children[i].textContent =
+                                controller1.scope[keys[i]];
+                    }
+                }
+
+            }
+
+            console.log(controller1.children);
+        }
+        function controller2() {
+            var controller2 = {};
+            controller2.scope = {};
+            controller2.scope.message = 'Ray Hengst';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            controller1(); controller2();
+
+        });
+    </script>
+</head>
+<body>
+<div view="controller1">
+    <div>
+        {{message}}
+    </div>
+    <div>
+        <div>
+            {{data}}
+        </div>
+    </div>
+</div>
+<div view="controller2">
+    {{name}}
+</div>
+</body>
+</html>
